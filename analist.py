@@ -27,10 +27,20 @@ df_principal = df_principal.drop(columns=['Código']);
 
 df_principal['Variacao_RS'] = (df_principal['Valor_Final'] - df_principal['valor_inicial']) * df_principal['Qtde. Teórica'];
 
-pd.options.display.float_format = '{:.2f}'.format
+pd.options.display.float_format = '{:.2f}'.format;
 
-df_principal['Qtde. Teórica'] = df_principal['Qtde. Teórica'].astype(int)
+df_principal['Qtde. Teórica'] = df_principal ['Qtde. Teórica'].astype(int);
 
 df_principal = df_principal.rename(columns={'Qtde. Teórica': 'Qtd_teorica'}).copy();
 
-print(df_principal.head(10));
+df_principal['Resultado'] = df_principal['Variacao_RS'].apply(lambda x: 'subiu' if x > 0 else ('Desceu' if x < 0 else 'Estavel'));
+
+df_principal = df_principal.merge(df_ticker, left_on='Ativo', right_on='Ticker', how='left');
+
+df_principal = df_principal.drop(columns=['Ticker']);
+
+df_principal = df_principal.merge(df_chatgpt, left_on='Nome', right_on='Nome Da Empresa', how='left');
+
+df_principal = df_principal.drop(columns=['Nome Da Empresa']);
+
+print(df_principal.head(100));
