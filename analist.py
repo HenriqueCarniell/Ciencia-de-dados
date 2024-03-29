@@ -49,7 +49,7 @@ df_principal.drop(columns=['Ticker'])
 df_principal = df_principal.merge(df_chatgpt, left_on='Nome', right_on='Nome Da Empresa', how='left')
 
 # Remove a coluna 'Nome Da Empresa' após o merge
-df_principal.drop(columns=['Nome Da Empresa'], inplace=True)
+df_principal.drop(columns=['Nome Da Empresa'])
 
 # Cria uma nova coluna 'Cat_Idade' baseada na idade em anos
 df_principal['Cat_Idade'] = df_principal['Idade em Anos'].apply(lambda x: 'Mais de 100' if x > 100 else ('Menos de 50' if x < 50 else 'Entre 50 e 100'))
@@ -83,4 +83,6 @@ df_analise_saldo = df_principal.groupby('Resultado')['Variacao_RS'].sum().reset_
 
 fig = px.bar(df_analise_saldo, x='Resultado', y='Variacao_RS', text='Variacao_RS', title='variação reais por resultado')
 
-fig.show()
+# fig.show()
+
+
